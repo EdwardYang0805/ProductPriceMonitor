@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from . import logic
 #搜索商品
 def request_seach(request):
-    profrom = request.GET.get('profrom')
-    produce = request.GET.get('produce')
-    print (profrom)
-    print (produce)
-    return HttpResponse(logic.Do_Seach(profrom,produce))
+    platform = request.GET.get('platform')
+    keyword = request.GET.get('keyword')
+    print (platform)
+    print (keyword)
+    return HttpResponse(logic.Do_Seach(platform,keyword))
