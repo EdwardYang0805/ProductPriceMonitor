@@ -2,6 +2,8 @@ import os
 from . import netinterface
 from . import const_define
 import requests
+from lxml import etree
+import time
 
 g_headers = {'referer': 'https://search.jd.com',
 'sec-fetch-mode': 'navigate',
@@ -19,12 +21,20 @@ def Do_Seach(keyword):
     strURL = jd_seach_addr + "？keyword=" + keyword + "&enc=utf-8"
     res = netinterface.requestURL(strURL,g_headers)
     print(res.headers)
-    if res.status_code == 200:
-        print("京东搜索成功")
-        return const_define.RetNo.Ret_Success.value
-    else:
+    if res.status_code != 200:
         return const_define.RetNo.Ret_DoSeachError.value
 
-#在content中检索商品信息
+    print("京东搜索成功")
+    #res.encoding = 'utf-8'
+    ParseGoodsInfo(res)
+    return const_define.RetNo.Ret_Success.value
 
+
+
+#在content中检索商品信息
+def ParseGoodsInfo(htmlContent):
+    html1 = etree.HTML(htmlContent.text)
+    print(html1)
+    datas = html1.xpath('//li[contains(@class,"gl-item")]')
+    print(datas)
 
