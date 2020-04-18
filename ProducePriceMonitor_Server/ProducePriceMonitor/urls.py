@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import re_path
+import django.views.static
 from. import view
 urlpatterns = [
     path('seach', view.request_seach),
+    re_path(r'^img/(?P<path>.*)$',django.views.static.serve,{"document_root":"./img"}),
 ]
