@@ -40,7 +40,9 @@ def Do_Seach(keyword):
     goodsList = ParseGoodsInfo(res)
     response = {}
     response["ret"] = "success"
-    response["data"] = goodsList
+    seach_result ={"platForm": "JD","keyword": keyword}
+    seach_result["goodsList"] = goodsList
+    response["data"] = seach_result
     return response
 
 
