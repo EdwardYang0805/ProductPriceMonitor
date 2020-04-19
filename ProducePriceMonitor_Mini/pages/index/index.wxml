@@ -1,0 +1,13 @@
+<!--index.wxml-->
+<view class='item-list'>
+  <view class='pro-list' wx:for="{{proLists}}" data-index="{{index}}">
+    <view class='pro-logo'><image width="220" height="220" src='{{item.goodsImg}}'></image></view>
+    <view class='pro-right'>
+      <view class='pro-title'>{{item.goodsName}}</view>
+      <text class='pro-desc'>{{item.goodsPrice}}</text>
+      <view class='pro-button'><button>more</button><button open-type="contact">contact</button>
+      </view>
+    </view>
+  </view>
+</view>
+
