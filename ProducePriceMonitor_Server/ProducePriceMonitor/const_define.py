@@ -1,5 +1,9 @@
 import os
 from enum import Enum
+#AppID
+AppID = "wx8ae03dd93e7f77c5"
+AppSecret = "001b238b738f76e1da0ce3740a737853"
+
 #电商平台首页地址
 const_shop_base_addr = [{"name":"JD","addr":"https://www.jd.com"}]
 #电商平台搜索地址

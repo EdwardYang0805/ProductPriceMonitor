@@ -20,5 +20,6 @@ import django.views.static
 from. import view
 urlpatterns = [
     path('seach', view.request_seach),
+    path('login', view.request_login),
     re_path(r'^img/(?P<path>.*)$',django.views.static.serve,{"document_root":"./img"}),
 ]
