@@ -75,7 +75,7 @@ def ParseGoodsInfo(htmlContent):
         goods["goodsID"] = p_good_id[0]
         goods["goodsName"] = p_name[0].xpath('string(.)')
         goods["goodsPrice"] = p_price[0]
-        goods["goodsImg"] = p_img[0]
+        goods["goodsImg"] = "http://49.233.195.95:8000/"+localPath+p_good_id[0]+".png"
         jd_goods.append(goods)
        
     return jd_goods
