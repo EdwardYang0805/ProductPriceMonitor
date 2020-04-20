@@ -1,13 +1,19 @@
 <!--index.wxml-->
-<view class='item-list'>
-  <view class='pro-list' wx:for="{{proLists}}" data-index="{{index}}">
-    <view class='pro-logo'><image width="220" height="220" src='{{item.goodsImg}}'></image></view>
-    <view class='pro-right'>
-      <view class='pro-title'>{{item.goodsName}}</view>
-      <text class='pro-desc'>{{item.goodsPrice}}</text>
-      <view class='pro-button'><button>more</button><button open-type="contact">contact</button>
+<view class='list'>
+ <SearchBar id="SearchBar"  bind:addhandle="addhandle" searchstr="{{searchstr}}" bind:endsearchList="endsearchList" bind:activity_clear="activity_clear">
+    </SearchBar>
+  <block wx:for='{{goodsLists}}' wx:key='list' wx:for-item="item">
+  <view class="list_item">
+      <navigator url='details?id={{item.goodsID}}'>
+      <view class='img'>
+        <image src="{{imghref}}{{item.goodsImg}}"  mode="scaleToFill"/>
       </view>
-    </view>
+      <view class='info'>
+        <view class='title'>{{item.goodsName}}</view>
+        <view class='price'>￥{{item.goodsPrice}}</view>
+      </view>
+       </navigator>
+      <view class='clear'></view>
   </view>
+  </block>
 </view>
-
