@@ -1,2 +1,2 @@
 获取评论数量
-https//club.jd.com/comment/productCommentSummaries.action?referenceIds=100000287121&callback=?
+https//club.jd.com/comment/productCommentSummaries.action?referenceIds=100000287121&callback=?  
