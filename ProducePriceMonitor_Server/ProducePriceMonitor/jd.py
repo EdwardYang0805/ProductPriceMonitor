@@ -6,6 +6,7 @@ import time
 import re
 import json
 from lxml import etree
+import json
 
 g_headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0',
@@ -16,6 +17,7 @@ g_headers = {
     'Connection': 'keep-alive',
     'Upgrade-Insecure-Requests': '1',
     'TE': 'Trailers',
+    'Accept-Encoding': '',
 }
 #京东搜索URL格式：https://search.jd.com/Search?keyword=关键字&enc=utf-8
 def Do_Seach(keyword):
@@ -53,18 +55,21 @@ def ParseGoodsInfo(htmlContent):
     #定位到每一个商品标签li
     datas=html1.xpath('//li[contains(@class,"gl-item")]')
     print(len(datas))
-    print(datas)
     jd_goods = []
     for data in datas:
         p_good_id = data.xpath('@data-pid')
+        if len(p_good_id) == 0:
+            p_good_id = data.xpath('@data-sku')
+        p_tab = data.xpath('div/div/div[@class="gl-i-tab-content"]')
+        if len(p_tab) != 0:
+            data = p_tab[0]
         p_price = data.xpath('div/div[@class="p-price"]/strong/i/text()')
-        p_comment = data.xpath('div/div[5]/strong/a/text()')
+        #p_comment = data.xpath('div/div[5]/strong/a/text()') #评论数这样获取不到
         p_name = data.xpath('div/div[@class="p-name p-name-type-2"]/a/em')
         p_img = data.xpath('div/div[@class="p-img"]/a/img/@source-data-lazy-img')
             #这个if判断用来处理那些价格可以动态切换的商品，比如上文提到的小米MIX2，他们的价格位置在属性中放了一个最低价
         if len(p_price) == 0:
             p_price = data.xpath('div/div[@class="p-price"]/strong/@data-price')
-        print(p_good_id[0] + "    " + p_name[0].xpath('string(.)')+"   "+p_price[0] + "    " + p_img[0])
         #下载图片
         localPath = const_define.GetShopImgPath("JD")
         if localPath == "":
@@ -76,8 +81,24 @@ def ParseGoodsInfo(htmlContent):
         goods["goodsName"] = p_name[0].xpath('string(.)')
         goods["goodsPrice"] = p_price[0]
         goods["goodsImg"] = "http://49.233.195.95:8000/"+localPath+p_good_id[0]+".png"
+        goods["goodsCommit"] = GetGoodCommit(p_good_id[0])
         jd_goods.append(goods)
-       
     return jd_goods
+
+#获取商品的评论数
+def GetGoodCommit(goods_id):
+    params = (
+        ('referenceIds', goods_id),
+        ('callback', '?'),
+    )
+    res = netinterface.requestURL("https://club.jd.com/comment/productCommentSummaries.action", g_headers, params)
+    if res.status_code != 200:
+        return "0"
+    res.encoding = 'GBK'
+    temp_json = res.content.decode('GBK').encode('utf-8')
+    temp_json = res.text.replace('%3F(', '')
+    temp_json = temp_json.replace(');', '')
+    commit_json = json.loads(temp_json)
+    return commit_json['CommentsCount'][0]['CommentCountStr']
 
 
