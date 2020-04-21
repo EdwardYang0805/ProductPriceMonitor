@@ -1,7 +1,7 @@
 <!--index.wxml-->
-<view class='list'>
  <SearchBar id="SearchBar"  bind:addhandle="addhandle" searchstr="{{searchstr}}" bind:endsearchList="endsearchList" bind:activity_clear="activity_clear">
     </SearchBar>
+<view class='list'>
   <block wx:for='{{goodsLists}}' wx:key='list' wx:for-item="item">
   <view class="list_item">
       <navigator url='details?id={{item.goodsID}}'>
@@ -11,6 +11,10 @@
       <view class='info'>
         <view class='title'>{{item.goodsName}}</view>
         <view class='price'>￥{{item.goodsPrice}}</view>
+        <view class='commit'>
+          <view class='commitcount'>{{item.goodsCommit}}条评论</view>
+          <view class='goodcommit'>好评率95%</view>
+        </view>
       </view>
        </navigator>
       <view class='clear'></view>
