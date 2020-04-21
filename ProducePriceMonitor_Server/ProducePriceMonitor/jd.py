@@ -81,7 +81,8 @@ def ParseGoodsInfo(htmlContent):
         goods["goodsName"] = p_name[0].xpath('string(.)')
         goods["goodsPrice"] = p_price[0]
         goods["goodsImg"] = "http://49.233.195.95:8000/"+localPath+p_good_id[0]+".png"
-        goods["goodsCommit"] = GetGoodCommit(p_good_id[0])
+        goods["goodsCommit"] = GetGoodCommit(p_good_id[0])['CommentCountStr']
+        goods["goodRate"] = GetGoodCommit(p_good_id[0])['GoodRateShow']
         jd_goods.append(goods)
     return jd_goods
 
@@ -99,6 +100,6 @@ def GetGoodCommit(goods_id):
     temp_json = res.text.replace('%3F(', '')
     temp_json = temp_json.replace(');', '')
     commit_json = json.loads(temp_json)
-    return commit_json['CommentsCount'][0]['CommentCountStr']
+    return commit_json['CommentsCount'][0]
 
 

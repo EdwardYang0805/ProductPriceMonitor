@@ -13,7 +13,7 @@
         <view class='price'>￥{{item.goodsPrice}}</view>
         <view class='commit'>
           <view class='commitcount'>{{item.goodsCommit}}条评论</view>
-          <view class='goodcommit'>好评率95%</view>
+          <view class='goodcommit'>好评率{{item.goodsRate}}%</view>
         </view>
       </view>
        </navigator>
