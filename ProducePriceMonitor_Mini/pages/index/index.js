@@ -16,6 +16,7 @@ Page({
     wx.request({
       url: 'http://49.233.195.95:8000/seach',
       method:'GET',
+      header:app.GetRequestHeader(),
       data: {
         platform: platfrom,
         keyword:keyword
