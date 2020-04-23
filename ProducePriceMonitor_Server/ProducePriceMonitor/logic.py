@@ -12,10 +12,13 @@ def Do_Login(js_code):
 
     print(res.content)
     if res.status_code == 200:
+        print("11")
         res_json = json.loads(res.content)
         if "errcode" in res_json:
+            print("22")
             return None
-        if not db_func.UserIsExistInDB(res_json["openid"]):
+        if db_func.UserIsExistInDB(res_json["openid"]) == False:
+            print("33")
             db_func.AddUserInfoToDB(res_json["openid"], res_json["session_key"])
         return res_json["openid"]
     return None
