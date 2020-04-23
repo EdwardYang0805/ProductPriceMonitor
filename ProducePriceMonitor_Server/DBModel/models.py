@@ -6,6 +6,7 @@ class UserInfo(models.Model):
     session_key = models.CharField(max_length=30)
     unionid = models.CharField(max_length=30)
     self_session = models.CharField(max_length=40,default=0)
+    last_active_time = models.DateTimeField(auto_now=True)
 
 class UserGoodsInfo(models.Model):
     openid = models.CharField(primary_key=True, max_length=30)
