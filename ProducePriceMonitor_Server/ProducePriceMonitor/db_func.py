@@ -1,5 +1,7 @@
 import os
 from DBModel.models import *
+from datetime import datetime
+from django.utils import timezone
 #通过openid获取用户信息
 def UserIsExistInDB(open_id):
     try:
@@ -37,4 +39,23 @@ def SetUserSession(open_id,session_id):
         return 
     else:
         user_info.self_session = session_id
+        user_info.last_active_time = timezone.now()
         user_info.save()
+#获取上一次活跃时间
+def GetSessionLastActiveTime(session_id):
+    try:
+        user_info = UserInfo.objects.get(self_session=session_id)
+    except UserInfo.DoesNotExist:
+        return None
+    else:
+        return user_info.last_active_time
+#更新活跃时间
+def UpdateSessionLastActiveTime(session_id):
+    try:
+        user_info = UserInfo.objects.get(self_session=session_id)
+    except UserInfo.DoesNotExist:
+        return
+    else:
+        user_info.last_active_time = timezone.now()
+        user_info.save()
+
