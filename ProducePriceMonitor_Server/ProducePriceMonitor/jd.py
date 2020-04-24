@@ -67,6 +67,9 @@ def ParseGoodsInfo(htmlContent):
         #p_comment = data.xpath('div/div[5]/strong/a/text()') #评论数这样获取不到
         p_name = data.xpath('div/div[@class="p-name p-name-type-2"]/a/em')
         p_img = data.xpath('div/div[@class="p-img"]/a/img/@source-data-lazy-img')
+        p_shop = data.xpath('div/div[@class="p-shop"]/span/a')
+        print(p_name[0].xpath('string(.)'))
+        print(len(p_shop))
             #这个if判断用来处理那些价格可以动态切换的商品，比如上文提到的小米MIX2，他们的价格位置在属性中放了一个最低价
         if len(p_price) == 0:
             p_price = data.xpath('div/div[@class="p-price"]/strong/@data-price')
@@ -83,6 +86,8 @@ def ParseGoodsInfo(htmlContent):
         goods["goodsImg"] = "http://49.233.195.95:8000/"+localPath+p_good_id[0]+".png"
         goods["goodsCommit"] = GetGoodCommit(p_good_id[0])['CommentCountStr']
         goods["goodRate"] = GetGoodCommit(p_good_id[0])['GoodRateShow']
+        if len(p_shop) != 0:
+            goods["goodRate"] = p_shop[0]
         jd_goods.append(goods)
     return jd_goods
 

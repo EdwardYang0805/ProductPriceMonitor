@@ -22,14 +22,14 @@ class GoodsPriceInfo(models.Model):
     time = models.DateTimeField(auto_now=True)
     price = models.CharField(max_length=15)
 
-class UserMonitorOrder(models.Model):
-    order_id = models.CharField(primary_key=True, max_length=30)
-    begin_time = models.DateTimeField(auto_now=True)
-    end_time = models.DateTimeField(auto_now=True)
+class UserMonitorCart(models.Model):
+    openid = models.CharField(primary_key=True, max_length=30)
     goods_list = models.CharField(max_length=2048)
 
 class UserMonitorOrderHistory(models.Model):
-    order_id = models.CharField(primary_key=True, max_length=30)
+    openid = models.CharField(primary_key=True, max_length=30)
+    order_id = models.CharField( max_length=30)
     begin_time = models.DateTimeField(auto_now=True)
     end_time = models.DateTimeField(auto_now=True)
     goods_list = models.CharField(max_length=2048)
+    finished = models.BooleanField(default=False)

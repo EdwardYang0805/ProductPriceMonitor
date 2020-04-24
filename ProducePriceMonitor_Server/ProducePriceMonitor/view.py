@@ -68,12 +68,59 @@ def request_seach(request):
         ret_json["data"] = {"msg": "seseion timeout"}
         res.write(json.dumps(ret_json))
         res.status_code = 301
-    else:    
+    else:
+        openId = db_func.GetUserOpenIdBySeesion(my_session_id)
         db_func.UpdateSessionLastActiveTime(my_session_id)
         platform = request.GET.get('platform')
         keyword = request.GET.get('keyword')
-        ret_json = logic.Do_Seach(platform,keyword)
+        ret_json = logic.Do_Seach(openId,platform,keyword)
         res.write(json.dumps(ret_json))
         res.status_code = 200
         
+    return res
+
+#向监测车中添加商品
+def request_addGoodsIntoCart(request):
+    ret_json = {}
+    res = HttpResponse()
+    my_session_id = request.COOKIES.get("my_session_id")
+    if checkSessionValid(my_session_id) == False:
+        ret_json["ret"] = "error"
+        ret_json["data"] = {"msg": "seseion timeout"}
+        res.write(json.dumps(ret_json))
+        res.status_code = 301
+    else:
+        openId = db_func.GetUserOpenIdBySeesion(my_session_id)
+        platform = request.GET.get('platform')
+        goodsid = request.GET.get('goodsid')
+        logic.AddGoodsToCart(openId, platform,goodsid)
+        ret_json["ret"] = "success"
+        ret_json["data"] = {"msg": ""}
+        res.write(json.dumps(ret_json))
+        res.status_code = 200
+    return res
+
+#在监测车中删除商品
+def request_delGoodsFromCart(request):
+    ret_json = {}
+    res = HttpResponse()
+    my_session_id = request.COOKIES.get("my_session_id")
+    if checkSessionValid(my_session_id) == False:
+        ret_json["ret"] = "error"
+        ret_json["data"] = {"msg": "seseion timeout"}
+        res.status_code = 301
+    else:
+        openId = db_func.GetUserOpenIdBySeesion(my_session_id)
+        postBody = request.body
+        del_json = json.loads(postBody["delData"])
+        #执行删除操作
+        if logic.DelGoodsFromCart(openId,del_json) == True:
+            ret_json["ret"] = "success"
+            ret_json["data"] = {"msg": ""}
+            res.status_code = 200
+        else:
+            ret_json["ret"] = "error"
+            ret_json["data"] = {"msg": "del error"}
+            res.status_code = 200
+    res.write(json.dumps(ret_json))
     return res
