@@ -33,11 +33,9 @@ def Do_Seach(keyword):
         ('pvid', '70b2126fcf3246ce9f32710d41799ede'),
     )
     res = netinterface.requestURL(jd_seach_addr,g_headers,params)
-    print(res.headers)
     if res.status_code != 200:
         return const_define.RetNo.Ret_DoSeachError.value
 
-    print("京东搜索成功")
     res.encoding = 'utf-8'
     goodsList = ParseGoodsInfo(res)
     response = {}
@@ -54,7 +52,6 @@ def ParseGoodsInfo(htmlContent):
     html1 = etree.HTML(htmlContent.text)
     #定位到每一个商品标签li
     datas=html1.xpath('//li[contains(@class,"gl-item")]')
-    print(len(datas))
     jd_goods = []
     for data in datas:
         p_good_id = data.xpath('@data-pid')
@@ -67,10 +64,8 @@ def ParseGoodsInfo(htmlContent):
         #p_comment = data.xpath('div/div[5]/strong/a/text()') #评论数这样获取不到
         p_name = data.xpath('div/div[@class="p-name p-name-type-2"]/a/em')
         p_img = data.xpath('div/div[@class="p-img"]/a/img/@source-data-lazy-img')
-        p_shop = data.xpath('div/div[@class="p-shop"]/span/a')
-        print(p_name[0].xpath('string(.)'))
-        print(len(p_shop))
-            #这个if判断用来处理那些价格可以动态切换的商品，比如上文提到的小米MIX2，他们的价格位置在属性中放了一个最低价
+        p_shop = data.xpath('div/div[@class="p-shop"]/span/a/text()')
+        #这个if判断用来处理那些价格可以动态切换的商品，比如上文提到的小米MIX2，他们的价格位置在属性中放了一个最低价
         if len(p_price) == 0:
             p_price = data.xpath('div/div[@class="p-price"]/strong/@data-price')
         #下载图片
@@ -87,7 +82,7 @@ def ParseGoodsInfo(htmlContent):
         goods["goodsCommit"] = GetGoodCommit(p_good_id[0])['CommentCountStr']
         goods["goodRate"] = GetGoodCommit(p_good_id[0])['GoodRateShow']
         if len(p_shop) != 0:
-            goods["goodRate"] = p_shop[0]
+            goods["goodstore"] = p_shop[0]
         jd_goods.append(goods)
     return jd_goods
 
