@@ -36,8 +36,21 @@ navigator{
   position:relative;
   flex-direction: column ;
 }
-.list .list_item .commit{
-  width:69%;
+.list .list_item .info .h_info{
+  width:100%;
+  display: flex;
+  flex-direction: row ;
+  align-items: left;
+}
+.list .list_item .info .h_info .v_info{
+  width:80%;
+  float:right;
+  display: flex;
+  flex-direction: column ;
+  align-items: left;
+}
+.list .list_item .info .h_info .v_info .commit{
+  width:100%;
   display: flex;
   flex-direction: row;
   align-items: left;
@@ -53,21 +66,39 @@ navigator{
   -webkit-box-orient: vertical;
 }
  
-.list .list_item .info .price{
+.list .list_item .info .h_info .v_info .price{
   color:#FF2727;
   margin-left:10px;
-  margin-top:10px;
+  margin-top:2px;
   font-size:15px;
 }
-.list .list_item .info .commit .commitcount{
+.list .list_item .info .h_info .v_info .commit .commitcount{
   color:#333;
   margin-left:10px;
-  margin-top:10px;
+  margin-top:2px;
   font-size:12px;
 }
-.list .list_item .info .commit .goodcommit{
+.list .list_item .info .h_info .v_info .commit .goodcommit{
   color:#333;
   margin-left:10px;
-  margin-top:10px;
+  margin-top:2px;
   font-size:12px;
 }
+.list .list_item .info .h_info .v_info .store{
+  color:#333;
+  margin-left:10px;
+  margin-top:2px;
+  font-size:12px;
+  align-items: left;
+}
+.list .list_item .info .h_info .btn[plain]{
+  border:0;
+  width: 20%;
+  height: 100%;
+}
+.list .list_item .info .h_info .btn .image{
+  margin: 0;
+  width:24rpx;
+  height: 24rpx;
+  border: none;
+ }

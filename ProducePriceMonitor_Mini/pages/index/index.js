@@ -59,4 +59,18 @@ Page({
       searchstr: ''
     })
   },
+  addCart(e){
+    var goods = e.currentTarget.dataset.goods;
+    //检查是否已存在
+    for(var i = 0; i < app.globalData.ordercart.length;i++)
+    {
+      if(app.globalData.ordercart[i]["goodsID"] == goods["goodsID"])
+      {
+        return;
+      } 
+    }
+    app.globalData.ordercart.push(goods)
+    
+    app.SaveOrderCartToStorage()
+  }
 })

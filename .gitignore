@@ -1,5 +1,6 @@
 *.pyc
-*.png
-*.jpg
 .idea/
 ProducePriceMonitor_Server/.idea/workspace.xml
+
+
+ProducePriceMonitor_Server/img/*

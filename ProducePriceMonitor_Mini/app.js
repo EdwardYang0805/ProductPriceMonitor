@@ -50,6 +50,15 @@ App({
         }
       }
     })
+    try{
+      var val =  wx.getStorageSync('ordercart');
+      if(val){
+        this.globalData.ordercart = val;
+      }
+    }catch(e){
+
+    }
+    
   },
   GetRequestHeader:function(){
     var sessionID = wx.getStorageSync('SessionID');//获取本地缓存中session
@@ -59,8 +68,12 @@ App({
     };
     return header;
   },
+  SaveOrderCartToStorage:function(){
+    wx.setStorageSync('ordercart', this.globalData.ordercart)
+  },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    ordercart: [],
   },
   
 })
