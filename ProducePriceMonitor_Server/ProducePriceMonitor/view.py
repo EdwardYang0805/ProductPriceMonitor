@@ -27,7 +27,6 @@ def checkSessionValid(session_id):
         return False
     cur_time = timezone.now()
     dur_time = (cur_time - session_time).total_seconds()
-    print(dur_time)
     if dur_time < session_valid_seconds:
         return True
     else:
