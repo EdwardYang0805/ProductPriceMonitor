@@ -18,21 +18,10 @@
             </view>
             <view class="order">
               <view class="title">{{item.goodsName}}</view>
-              <!---
-              <view class="desc">
-                <view>重量：{{item.weight}}</view>
-                <view>规格：{{item.spec}}</view>
-              </view>-->
               <view class="priceInfo">
                 <view class="price">￥{{item.goodsPrice}}</view>
-                <!---
-                <view class="minus" id="{{item.id}}" bindtap="minusGoods">-</view>
-                <view class="count">{{item.count}}</view>
-                <view class="add" id="{{item.id}}" bindtap="addGoods">+</view>
-                -->
               </view>
             </view>
-
           </view>
           <view class="line"></view>
         </block>
@@ -45,18 +34,20 @@
             </view>
             <view>全选</view>
           </view>
+          <view class="delete" bindtap="deleteGoods">
+            删除
+          </view>
           <view class="amount">
             <view class="total">
-              总计：￥{{totalPrice}}元
+              商品总计：￥{{totalPrice}}元
             </view>
-            <view>
-              不含运费，已优惠￥0.00
+             <view class="monitorprice">
+              监测费用：￥1 元
             </view>
           </view>
           <view class="opr">去结算</view>
         </view>
       </checkbox-group>
     </view>
-
   </view>
 </view>

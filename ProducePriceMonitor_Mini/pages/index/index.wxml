@@ -19,9 +19,17 @@
             </view>
             <view class='store'>{{item.goodstore}}</view>
           </view>
-          <button class="btn" plain="true" bindtap="addCart" data-goods="{{item}}">
-            <image src="/images/bar/add.png" style="width:24px;height:24px;"></image>
+          <button class="btn" plain="true" bindtap="addCart" data-goods="{{item}}" >
+            <block wx:if='{{item.goodsInCart}}'>
+              <image src="/images/bar/cart.png" style="width:24px;height:24px;"></image>
+            </block>
+            <block wx:else>
+              <image src="/images/bar/add.png" style="width:24px;height:24px;"></image>
+            </block>
           </button>
+          
+          
+          
         </view>
       </view>
        </navigator>

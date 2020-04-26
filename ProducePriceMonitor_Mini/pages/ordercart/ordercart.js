@@ -9,7 +9,8 @@ Page({
     goods:[],
     selected:true,
     selectedAll:true,
-    totalPrice:0.0
+    totalPrice:0.0,
+    monitorPrice:1.0
   },
 
   /**
@@ -81,14 +82,19 @@ Page({
     console.log(e.detail.value)
      var ids = e.detail.value;
      if(ids.length==0){
-       this.setData({selectedAll:false,totalPrice:0});
+      for (var i = 0; i < this.data.goods.length; i++) {
+        this.data.goods[i].isSelect = false;
+        this.setData({selectedAll:false,totalPrice:0,goods:this.data.goods});  
+      }
      }else{
        var totalPrice = 0;
        for (var i = 0; i < this.data.goods.length; i++) {
          var good = this.data.goods[i];
+         this.data.goods[i].isSelect = false
          for (var j = 0; j < ids.length; j++) {
            if (good.goodsID == ids[j]) {
              totalPrice += parseFloat(good.goodsPrice);
+             this.data.goods[i].isSelect = true
            }
          }
        }
@@ -103,44 +109,32 @@ Page({
      } 
   },
   checkAll:function(e){
-     var selected = this.data.selected;
+     var selected = this.data.selectedAll;
+     console.log(selected)
      var result = selected==true?false:true;
-     this.setData({selected:result});
+     for (var i = 0; i < this.data.goods.length; i++) {
+      this.data.goods[i].isSelect = result;
+     }
+     this.setData({selected:result,selectedAll:result,goods: this.data.goods});
      if (result==false){
         
      }else{
        this.loadGoods();
      }
   },
-  addGoods:function(e){
-    var id = e.currentTarget.id;
-    var goods = wx.getStorageSync("goods");
-    var addGoods = new Array();
-    for(var i=0;i<goods.length;i++){
-      var good = goods[i];
-      if(good.id == id){
-        good.count = good.count + 1;
+  deleteGoods:function(e){
+    console.log("delete")
+    for(var i = this.data.goods.length-1; i >= 0;i--)
+    {
+      if(this.data.goods[i].isSelect == true)
+      {
+        this.data.goods.splice(i,1)
+        this.data.totalPrice = 0.0
+        this.data.monitorPrice = 0.0
       }
-      addGoods.push(good);
+      app.globalData.ordercart = this.data.goods
+      app.SaveOrderCartToStorage()
     }
-    wx.setStorageSync("goods", addGoods);
-    this.loadGoods();
-  },
-  minusGoods:function(e){
-    var id = e.currentTarget.id;
-    var goods = wx.getStorageSync("goods");
-    var addGoods = new Array();
-    for (var i = 0; i < goods.length; i++) {
-      var good = goods[i];
-      if (good.id == id) {
-        var count = good.count;
-        if(count >= 2){
-          good.count = good.count - 1;
-        }
-      }
-      addGoods.push(good);
-    }
-    wx.setStorageSync("goods", addGoods);
-    this.loadGoods();
+    this.setData({goods:this.data.goods,totalPrice:this.data.totalPrice,monitorPrice:this.data.monitorPrice})
   }
 })

@@ -11,6 +11,30 @@ Page({
   onLoad: function () {
     //this.getProList();
   },
+    /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    console.log("OnShow")
+    if(this.data.goodsLists == null)
+    {
+      return
+    }
+    var goods_list = this.data.goodsLists
+    for(var i = 0; i < goods_list.length;i++)
+    {
+        if(this.IsInCart(goods_list[i].goodsID) == true)
+        {
+          goods_list[i].goodsInCart = true
+        }
+        else{
+          goods_list[i].goodsInCart = false
+        }
+    }
+    this.setData({
+      goodsLists:goods_list,
+    })
+  },
   getProList: function(platfrom,keyword){
     var self=this;
     wx.request({
@@ -22,9 +46,22 @@ Page({
         keyword:keyword
       },
       success:function(res){
-        console.log(res.data);
+        console.log(res.data)
+        
+        //判断监测车中是否已添加
+        var goods_list = res.data.data.goodsList
+        for(var i = 0; i < goods_list.length;i++)
+        {
+            if(self.IsInCart(goods_list[i].goodsID) == true)
+            {
+              goods_list[i].goodsInCart = true
+            }
+            else{
+              goods_list[i].goodsInCart = false
+            }
+        }
         self.setData({
-          goodsLists:res.data.data.goodsList,
+          goodsLists:goods_list,
         })
       },
       fail({errMsg}) {
@@ -61,16 +98,52 @@ Page({
   },
   addCart(e){
     var goods = e.currentTarget.dataset.goods;
+    console.log("4234234234234")
     //检查是否已存在
     for(var i = 0; i < app.globalData.ordercart.length;i++)
     {
       if(app.globalData.ordercart[i]["goodsID"] == goods["goodsID"])
       {
+        /*wx.showToast({
+          title: '已经在监测车中',
+          icon: 'none',
+          duration: 2000
+        })   */
         return;
       } 
     }
     app.globalData.ordercart.push(goods)
-    
+    this.SetGoodsInCart(goods.goodsID)
+    wx.showToast({
+      title: '添加成功',
+      icon: 'success',
+      duration: 2000
+    })     
     app.SaveOrderCartToStorage()
+  },
+  SetGoodsInCart:function(goodsID){
+    if(this.data.goodsLists == null)
+      return;
+    for(var i= 0; i < this.data.goodsLists.length;i++)
+    {
+      if(parseInt(this.data.goodsLists[i].goodsID) == parseInt(goodsID))
+      {
+        this.data.goodsLists[i].goodsInCart = true
+        break;
+      }
+    }
+    this.setData({
+      goodsLists : this.data.goodsLists
+    })
+  },
+  IsInCart:function(goodID){
+    for(var i= 0; i < app.globalData.ordercart.length;i++)
+    {
+      if(parseInt(app.globalData.ordercart[i].goodsID) == parseInt(goodID))
+      {
+        return true
+      }
+    }
+    return false
   }
 })

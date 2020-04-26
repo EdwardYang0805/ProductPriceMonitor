@@ -27,12 +27,6 @@
 .title{
   font-size: 15px;
 }
-.desc{
-  display: flex;
-  flex-direction: row;
-  font-size: 13px;
-  color: #cccccc;
-}
 .desc view{
   margin-right: 10px;
 }
@@ -46,11 +40,6 @@
   font-size: 15px;
   color: #ff0000;
   text-align: left;
-}
-.minus,.add{
-  border:1px solid #cccccc;
-  width:25px;
-  text-align: center;
 }
 .count{
   border-top:1px solid #cccccc;
@@ -66,20 +55,36 @@
 .all{
   align-items: center;
   padding-left: 10px;
-  width:20%;
+  width:10%;
   font-size: 12px;
   margin-top: 10px;
 }
+.delete{
+  width:10%;
+  font-size: 12px;
+  margin-top: 10px;
+  padding-left: 5px;
+}
 .amount{
-  width:50%;
+  align-items: right;
   font-size: 13px;
   text-align: right;
+  
 }
 .total{
   font-size: 16px;
   color: #ff0000;
   font-weight: bold;
   margin-bottom: 10px;
+  margin-right: 5px;
+}
+.monitorprice{
+  
+  font-size: 16px;
+  color: #ff0000;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-right: 5px;
 }
 .opr{
   position: absolute;
