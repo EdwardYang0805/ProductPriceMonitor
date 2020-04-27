@@ -63,22 +63,27 @@ def ParseGoodsInfo(htmlContent):
         p_price = data.xpath('div/div[@class="p-price"]/strong/i/text()')
         #p_comment = data.xpath('div/div[5]/strong/a/text()') #评论数这样获取不到
         p_name = data.xpath('div/div[@class="p-name p-name-type-2"]/a/em')
-        p_img = data.xpath('div/div[@class="p-img"]/a/img/@source-data-lazy-img')
+        #p_img = data.xpath('div/div[@class="p-img"]/a/img/@source-data-lazy-img')
+        p_img = data.xpath('div/div[@class="p-img"]/a/img/@src')
         p_shop = data.xpath('div/div[@class="p-shop"]/span/a/text()')
         #这个if判断用来处理那些价格可以动态切换的商品，比如上文提到的小米MIX2，他们的价格位置在属性中放了一个最低价
         if len(p_price) == 0:
             p_price = data.xpath('div/div[@class="p-price"]/strong/@data-price')
         #下载图片
-        localPath = const_define.GetShopImgPath("JD")
-        if localPath == "":
-            continue
-        netinterface.downLoadPic_requests("https:"+p_img[0],localPath+p_good_id[0]+".png")
+        picPath = ""
+        if len(p_img) != 0:
+            localPath = const_define.GetShopImgPath("JD")
+            if localPath == "":
+                continue
+            picPath = localPath+p_good_id[0]+".png"
+            print(picPath)
+            netinterface.downLoadPic_requests("https:"+p_img[0],picPath)
         #构造商品信息结构
         goods = {}
         goods["goodsID"] = p_good_id[0]
         goods["goodsName"] = p_name[0].xpath('string(.)')
         goods["goodsPrice"] = p_price[0]
-        goods["goodsImg"] = "http://49.233.195.95:8000/"+localPath+p_good_id[0]+".png"
+        goods["goodsImg"] = "http://49.233.195.95:8000/"+picPath
         goods["goodsCommit"] = GetGoodCommit(p_good_id[0])['CommentCountStr']
         goods["goodRate"] = GetGoodCommit(p_good_id[0])['GoodRateShow']
         if len(p_shop) != 0:
