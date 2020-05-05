@@ -123,3 +123,29 @@ def request_delGoodsFromCart(request):
             res.status_code = 200
     res.write(json.dumps(ret_json))
     return res
+
+#提交监测订单
+def request_monitorCart(request):
+    ret_json = {}
+    res = HttpResponse()
+
+    my_session_id = request.COOKIES.get("my_session_id")
+    if checkSessionValid(my_session_id) == False:
+        ret_json["ret"] = "error"
+        ret_json["data"] = {"msg": "seseion timeout"}
+        res.status_code = 301
+    else:
+        openId = db_func.GetUserOpenIdBySeesion(my_session_id)
+        db_func.UpdateSessionLastActiveTime(my_session_id)
+        postBody = request.POST
+        cart_json = json.loads(postBody['cartData'])
+        if logic.PostMonitorCart(openId, cart_json) == True:
+            ret_json["ret"] = "success"
+            ret_json["data"] = {"msg": ""}
+            res.status_code = 200
+        else:
+            ret_json["ret"] = "error"
+            ret_json["data"] = {"msg": "post monitor cart error"}
+            res.status_code = 200
+    res.write(json.dumps(ret_json))
+    return res

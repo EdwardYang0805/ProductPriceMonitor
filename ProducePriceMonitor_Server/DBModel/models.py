@@ -8,13 +8,11 @@ class UserInfo(models.Model):
     self_session = models.CharField(max_length=40,default=0)
     last_active_time = models.DateTimeField(auto_now=True)
 
-class UserGoodsInfo(models.Model):
-    openid = models.CharField(primary_key=True, max_length=30)
+class MonitorGoodsInfo(models.Model):
+    goods_id = models.CharField(primary_key=True, max_length=30)
     begin_time = models.DateTimeField(auto_now=True)
-    end_time = models.DateTimeField(auto_now=True)
-    platform = models.CharField(max_length=10)
-    goods_id = models.CharField(max_length=30)
-    monitor_user = models.CharField(max_length=2048)
+    end_time = models.DateTimeField()
+    goods_price = models.CharField(max_length=10240, default="")
 
 class GoodsPriceInfo(models.Model):
     goods_id = models.CharField(primary_key=True, max_length=30)
@@ -26,9 +24,9 @@ class UserMonitorCart(models.Model):
     openid = models.CharField(primary_key=True, max_length=30)
     goods_list = models.CharField(max_length=2048)
 
-class UserMonitorOrderHistory(models.Model):
-    openid = models.CharField(primary_key=True, max_length=30)
-    order_id = models.CharField( max_length=30)
+class UserMonitorOrder(models.Model):
+    openid = models.CharField(max_length=30)
+    order_id = models.AutoField(primary_key=True)
     begin_time = models.DateTimeField(auto_now=True)
     end_time = models.DateTimeField(auto_now=True)
     goods_list = models.CharField(max_length=2048)

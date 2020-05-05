@@ -86,3 +86,35 @@ def UpdateGoodsToMonitorCart(openID,goods_list_obj):
     else:
         cart_info.goods_list = json.dumps(goods_list_obj)
     cart_info.save()
+
+#添加一个订单
+def AddMonitorOrder(openID,order_json_obj):
+    print(order_json_obj)
+    order_info =UserMonitorOrder()
+    order_info.openid = openID
+    order_info.begin_time =timezone.now()
+    order_info.end_time = order_json_obj['endTime']
+    order_info.finished = False
+    goodsListsJson = {}
+    goodsListsJson["goodsList"] = order_json_obj['goodsList']
+    order_info.save()
+
+#添加监测商品
+def AddMonitorGoods(end_time,good_info):
+    try:
+        print("2222222222222222222222222222")
+        goods_info = MonitorGoodsInfo.objects.get(goods_id =good_info['goodsid'])
+        print("333333333333333333333333333333")
+    except MonitorGoodsInfo.DoesNotExist:
+        goods_info = MonitorGoodsInfo()
+        goods_info.goods_id = good_info['goodsid']
+        goods_info.begin_time = timezone.now()
+        goods_info.end_time = end_time;
+        print(end_time)
+        goods_info.save()
+    else:
+        goods_info.end_time = end_time
+        goods_info.save
+
+
+

@@ -68,6 +68,15 @@ def DelGoodsFromCart(openID,del_json):
             cart_goods_obj["goodsList"].pop(index)
         db_func.UpdateGoodsToMonitorCart(openID, cart_goods_obj)
     return True
+#################################提交监测订单####################################
+def PostMonitorCart(openID,cart_json):
+    db_func.AddMonitorOrder(openID,cart_json)
+    #向监测商品表中添加
+    for goods in cart_json['goodsList']:
+        db_func.AddMonitorGoods(cart_json['endTime'],goods)
+    print("1111111111111111")
+    return True
+
 
 
 
